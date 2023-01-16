@@ -14,7 +14,7 @@
     top: 0px;
     z-index: 2;
     /* border-radius: 50%; */
-    background-image: url(./icons8-волейбол-96.png);
+    /* background-image: url(./icons8-волейбол-96.png); */
   }
 
   .block3{
@@ -49,12 +49,25 @@ button{
 .block2{
     width: 150px;
     height: 150px;
-    background-image: url(./icons8-кофейный-столик-64.png);
+    background-image: url(./icon/table.png);
     position: absolute;
     right: 100px;
-    top: 40%;
+    top: 30%;
     background-size: cover;
     z-index: 1;
+}
+.block2-1, .block2-2{
+    width: 150px;
+    height: 150px;
+    /* background-image: url(./icon/chair.png); */
+    position: absolute;
+    right: 100px;
+    top: 60%;
+    background-size: cover;
+    z-index: 1;
+}
+.block2-2{
+    top: 90%;
 }
 .language {
     display: flex;
@@ -82,13 +95,14 @@ button{
     position: relative;
 }
 .creators div {
-    position: fixed;
-    bottom: 26px;
-    left: 12px;
-    width: 250px;
+    /* position: fixed; */
+    /* bottom: 26px; */
+    /* left: 12px; */
+    width: 100%;
     /* height: 100px; */
     background-color: white;
     padding: 10px;
+    font-size: 2em;
 }
 .creators div:first-child p {
     margin-bottom: 10px;
@@ -171,7 +185,7 @@ header{
     background-color: transparent;
     border: none;
 }
-.won{
+.won, .thank{
     text-align: center;
     width: 280px;
     padding: 10px;

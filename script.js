@@ -5,6 +5,8 @@ let $startFrame = document.querySelector('.start')
 let $part1 = document.querySelector('.part1')
 let $game = document.querySelector('.game')
 let $table = document.querySelector('#table')
+let $chair = document.querySelector('#table1')
+let $chair2 = document.querySelector('#table2')
 let $won = document.querySelector('.won')
 let $resetBtn = document.querySelector('.reset')
 let $nextBtn = document.querySelector('.next')
@@ -15,6 +17,7 @@ let $tasks = document.querySelector('.tasks');
 let $task = document.querySelectorAll('.task')
 let $description = document.querySelector('.description')
 let $mainPage = document.querySelector('#mainPage')
+let $thank = document.querySelector('.thank')
 let audio = new Audio("audio/welcome.mp3");
 let level = 1
 $task.forEach((t, e) => {
@@ -72,7 +75,11 @@ circle.addEventListener('mouseup', e => {
 });
 
 function won() {
-    $won.classList.remove('hide')
+    if (level == 10){
+        $thank.classList.remove('hide')
+    }else{
+        $won.classList.remove('hide')
+    }
     $game.style.pointerEvents = 'none'
 }
 
@@ -90,14 +97,15 @@ $nextBtn.addEventListener('click', function () {
 })
 
 $start.addEventListener('click', function () {
-    audio.play();
+    // audio.play();
     // $tasks.style.visibility = "visible;
-    $tasks.classList.remove('hide')
+    $game.classList.remove('hide')
     $startFrame.classList.add('hide')
+    levels(level)
 })
 
-
 function levels(level) {
+    console.log('yes')
     level = Number(level)
     $tasks.classList.add('hide')
     $game.classList.remove('hide')
@@ -114,17 +122,26 @@ function levels(level) {
     switch (level) {
         case 1:
             icon = "ball"
+            place = "table"
             break
         case 2:
             icon = "pen"
+            icon1 = "ball"
+            place = "table"
+            place1 = "chair"
             break
         case 3:
-            icon = "book"
+            icon = "pen"
+            icon1 = "ball"
+            place = "chair"
+            place1 = "table"
             break
         case 4:
-            icon = "ball"
+            icon = "book"
             icon1 = "pen"
-            icon2 = "book"
+            icon2 = "ball"
+            place = "chair"
+            place1 = "table"
             break
         case 5:
             icon = "pen"
@@ -138,36 +155,55 @@ function levels(level) {
             break
         case 7:
             color = "red"
+            place = "red-table"
+            place1 = "blue-table"
             break
         case 8:
             color = "green"
+            place = "green-table"
+            place1 = "blue-table"
             break
         case 9:
             color = "blue"
+            place = "blue-table"
+            place1 = "green-table"
             break
+        case 10:
+            color = "blue"
+            place = "green-chair"
+            place1 = "blue-chair"
+            place2 = "red-chair"
+            break  
+
     }
     if (level <= 3) {
-        audio = new Audio(`audio/${icon}-table.mp3`);
+        audio = new Audio(`audio/${icon}-${place}.mp3`);
         audio.play()
         $description.innerHTML = ""
         $description.insertAdjacentHTML('beforeend', `
-            <p>put ${icon} on the table</p>
+            <p>put the ${icon} on the ${place}</p>
         `)
+        $chair.classList.remove('hide')
+        $circle1.classList.remove('hide')
         $circle.style.backgroundImage = `url(./icon/${icon}.png)`
-        $table.style.backgroundImage = `url(./icon/table.png)`
-    } else if (level > 3 && level <= 6) {
-        audio = new Audio(`audio/${icon}-table.mp3`);
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
+        $circle1.style.backgroundImage = `url(./icon/${icon1}.png)`
+    }else if (level > 3 && level <= 6) {
+        audio = new Audio(`audio/${icon}-${place}.mp3`);
         audio.play()
         $description.innerHTML = ""
         $description.insertAdjacentHTML('beforeend', `
-            <p>put ${icon} on the table</p>
+            <p>put the ${icon} on the ${place}</p>
         `)
         $circle1.classList.remove('hide')
         $circle2.classList.remove('hide')
+        
         $circle.style.backgroundImage = `url(./icon/${icon}.png)`
         $circle1.style.backgroundImage = `url(./icon/${icon1}.png)`
         $circle2.style.backgroundImage = `url(./icon/${icon2}.png)`
-        $table.style.backgroundImage = `url(./icon/table.png)`
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
     } else if (level > 6 && level < 10) {
         $circle1.classList.add('hide')
         $circle2.classList.add('hide')
@@ -177,29 +213,27 @@ function levels(level) {
         audio.play()
         $description.innerHTML = ""
         $description.insertAdjacentHTML('beforeend', `
-            <p>put ${color} ball on the ${color} table</p>
+            <p>put the ${color} ball on the ${color} table</p>
         `)
-        // <div>
-        //         <img src="./ball${level}.png">
-        //         --- ${color} ball
-        //     </div>
-        //      <div>
-        //         <img src="./table${level}.png">
-        //         --- ${color} table
-        //     </div>
         $table.style.color = "black"
         $circle.style.backgroundImage = `url(./ball${level}.png)`
-        $table.style.backgroundImage = `url(./table${level}.png)`
-    } else {
-        level -= 3
-        $table1.classList.remove('hide')
-        $table2.classList.remove('hide')
-        $table1.style.backgroundImage = url(`./table2.png`)
-        $table1.style.right = "50%"
-        $table2.style.right = "80%"
-        $table2.style.backgroundImage = url(`./table3.png`)
-        $table.style.backgroundImage = url(`./table1.png`)
-        $circle.style.backgroundImage = url(`./ball${level}.png`)
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
+    } else if (level >= 10) {
+        $circle1.classList.add('hide');
+        $circle2.classList.add('hide');
+        audio = new Audio(`audio/blueball-greentable.mp3`);
+        audio.play()
+        $description.innerHTML = ""
+        $description.insertAdjacentHTML('beforeend', `
+            <p>put the ${color} ball on the green chair</p>
+        `)
+        $table.style.color = "black"
+        $chair2.classList.remove('hide')
+        $circle.style.backgroundImage = `url(./ball${9}.png)`
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
+        $chair2.style.backgroundImage = `url(./icon/${place2}.png)`
     }
 }
 

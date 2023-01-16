@@ -5,6 +5,8 @@ let $startFrame = document.querySelector('.start')
 let $part1 = document.querySelector('.part1')
 let $game = document.querySelector('.game')
 let $table = document.querySelector('#table')
+let $chair = document.querySelector('#table1')
+let $chair2 = document.querySelector('#table2')
 let $won = document.querySelector('.won')
 let $resetBtn = document.querySelector('.reset')
 let $nextBtn = document.querySelector('.next')
@@ -15,6 +17,7 @@ let $tasks = document.querySelector('.tasks');
 let $task = document.querySelectorAll('.task')
 let $description = document.querySelector('.description')
 let $mainPage = document.querySelector('#mainPage')
+let $thank = document.querySelector('.thank')
 let audio = new Audio("audioKor/welcome.mp3");
 let level = 1
 $task.forEach((t, e) => {
@@ -72,7 +75,11 @@ circle.addEventListener('mouseup', e => {
 });
 
 function won() {
-    $won.classList.remove('hide')
+    if (level == 10){
+        $thank.classList.remove('hide')
+    }else{
+        $won.classList.remove('hide')
+    }
     $game.style.pointerEvents = 'none'
 }
 
@@ -90,10 +97,11 @@ $nextBtn.addEventListener('click', function () {
 })
 
 $start.addEventListener('click', function () {
-    audio.play();
+    //audio.play();
     // $tasks.style.visibility = "visible;
-    $tasks.classList.remove('hide')
+    $game.classList.remove('hide')
     $startFrame.classList.add('hide')
+    levels(level)
 })
 
 
@@ -113,61 +121,92 @@ function levels(level) {
     let icon2 = ""
     switch (level) {
         case 1:
-            icon = "공"
+            icon = "공" //ball
+            place = "테이블" //table
             break
         case 2:
-            icon = "펜"
+            icon = "펜"  //pen
+            icon1 = "공"   //ball
+            place = "테이블" // table
+            place1= "의자" //chair
             break
         case 3:
-            icon = "도서"
+            icon = "펜"  // pen
+            icon1 = "공" //ball
+            place = "의자" //chair
+            place1 = "테이블" //table
             break
         case 4:
-            icon = "공"
-            icon1 = "펜"
-            icon2 = "도서"
+            icon = "도서" //books
+            icon1 = "펜"  //pen
+            icon2 = "공"  //ball
+            place = "의자" //chair
+            place1 = "테이블" ///table
             break
-        case 5:
-            icon = "펜"
-            icon1 = "공"
-            icon2 = "도서"
+
+            
+            
+       case 5:
+            icon = "펜" //pen
+            icon1 = "공"  //ball
+            icon2 = "도서" //books
             break
         case 6:
-            icon = "도서"
-            icon1 = "공"
-            icon2 = "펜"
+            icon = "도서" //books
+            icon1 = "공" //ball
+            icon2 = "펜" //pen
             break
+
         case 7:
-            color = "빨간"
+            color = "빨간" //red
+            place = "레드-테이블" //red table
+            place1= "파란색-테이블" //blue-table
             break
         case 8:
-            color = "초록"
+            color = "초록" //green
+            place = "초록-테이블" //green-table
+            place1= "파란색-테이블" //blue-table
             break
         case 9:
-            color = "파란색"
+            color = "파란색" //blue
+            place= "파란색-테이블" //blue-table
+            place1="초록-테이블" //green-table
+            break
+        case 10 :
+            color= "파란색" //blue
+            place= "녹색-의자" //green-chair
+            place1 = "파란색-의자" //blue-chair
+            place2 = "빨간-의자" //red-chair
             break
     }
     if (level <= 3) {
         $description.innerHTML = ""
         $description.insertAdjacentHTML('beforeend', `
-            <p>테이블 위에 ${icon} 을 놓고</p>
+            <p>${place} 위에 ${icon} 을 놓고</p>
         `)
-        audio = new Audio(`audioKor/${icon}-table.mp3`);
+        audio = new Audio(`audioKor/${icon}-${place}.mp3`);
         audio.play()
+        $chair.classList.remove('hide')
+        $circle1.classList.remove('hide')
         $circle.style.backgroundImage = `url(./icon/${icon}.png)`
-        $table.style.backgroundImage = `url(./icon/table.png)`
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
+        $circle1.style.backgroundImage = `url(./icon/${icon1}.png)`
     } else if (level > 3 && level <= 6) {
-        audio = new Audio(`audioKor/${icon}-table.mp3`);
+        audio = new Audio(`audioKor/${icon}-${place}.mp3`);
         audio.play()
         $description.innerHTML = ""
         $description.insertAdjacentHTML('beforeend', `
-            <p>테이블 위에 ${icon} 을 놓고</p>
+            <p>${place} 위에 ${icon} 을 놓고</p>
         `)
         $circle1.classList.remove('hide')
         $circle2.classList.remove('hide')
+        
         $circle.style.backgroundImage = `url(./icon/${icon}.png)`
         $circle1.style.backgroundImage = `url(./icon/${icon1}.png)`
         $circle2.style.backgroundImage = `url(./icon/${icon2}.png)`
-        $table.style.backgroundImage = `url(./icon/table.png)`
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
     } else if (level > 6 && level < 10) {
         $circle1.classList.add('hide')
         $circle2.classList.add('hide')
@@ -179,27 +218,26 @@ function levels(level) {
         $description.insertAdjacentHTML('beforeend', `
             <p> ${color} 탁자 위에 ${color} 공을 올려놓다</p>
         `)
-        // <div>
-        //         <img src="./ball${level}.png">
-        //         --- ${color} ball
-        //     </div>
-        //      <div>
-        //         <img src="./table${level}.png">
-        //         --- ${color} table
-        //     </div>
+   
         $table.style.color = "black"
         $circle.style.backgroundImage = `url(./ball${level}.png)`
-        $table.style.backgroundImage = `url(./table${level}.png)`
-    } else {
-        level -= 3
-        $table1.classList.remove('hide')
-        $table2.classList.remove('hide')
-        $table1.style.backgroundImage = url(`./table2.png`)
-        $table1.style.right = "50%"
-        $table2.style.right = "80%"
-        $table2.style.backgroundImage = url(`./table3.png`)
-        $table.style.backgroundImage = url(`./table1.png`)
-        $circle.style.backgroundImage = url(`./ball${level}.png`)
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
+    } else if (level >= 10) {
+        $circle1.classList.add('hide');
+        $circle2.classList.add('hide');
+        audio = new Audio(`audioKor/10.mp3`);
+        audio.play()
+        $description.innerHTML = ""
+        $description.insertAdjacentHTML('beforeend', `
+            <p>파란 공을 녹색 의자에 올려 놓으십시오.</p>
+        `)
+        $table.style.color = "black"
+        $chair2.classList.remove('hide')
+        $circle.style.backgroundImage = `url(./ball${9}.png)`
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
+        $chair2.style.backgroundImage = `url(./icon/${place2}.png)`
     }
 }
 

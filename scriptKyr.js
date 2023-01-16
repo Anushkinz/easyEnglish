@@ -1,10 +1,11 @@
-// озвучка iron мужчина
 var div = document.getElementById('circle');
 let $start = document.querySelector('#start')
 let $startFrame = document.querySelector('.start')
 let $part1 = document.querySelector('.part1')
 let $game = document.querySelector('.game')
 let $table = document.querySelector('#table')
+let $chair = document.querySelector('#table1')
+let $chair2 = document.querySelector('#table2')
 let $won = document.querySelector('.won')
 let $resetBtn = document.querySelector('.reset')
 let $nextBtn = document.querySelector('.next')
@@ -15,6 +16,7 @@ let $tasks = document.querySelector('.tasks');
 let $task = document.querySelectorAll('.task')
 let $description = document.querySelector('.description')
 let $mainPage = document.querySelector('#mainPage')
+let $thank = document.querySelector('.thank')
 let audio = new Audio("audio/welcome.mp3");
 let level = 1
 $task.forEach((t, e) => {
@@ -65,14 +67,18 @@ circle.addEventListener('mouseup', e => {
     let tablex = $table.getBoundingClientRect().x
     let tabley = $table.getBoundingClientRect().y
     if (Math.abs(divx - tablex) <= 80 && Math.abs(divy - tabley) <= 50) {
-        audio = new Audio(`audio/great.mp3`);
+        audio = new Audio(`audioKyr/great.mp3`);
         audio.play()
         won()
     }
 });
 
 function won() {
-    $won.classList.remove('hide')
+    if (level == 10){
+        $thank.classList.remove('hide')
+    }else{
+        $won.classList.remove('hide')
+    }
     $game.style.pointerEvents = 'none'
 }
 
@@ -90,10 +96,11 @@ $nextBtn.addEventListener('click', function () {
 })
 
 $start.addEventListener('click', function () {
-    audio.play();
+    //audio.play();
     // $tasks.style.visibility = "visible;
-    $tasks.classList.remove('hide')
+    $game.classList.remove('hide')
     $startFrame.classList.add('hide')
+    levels(level)
 })
 
 
@@ -114,21 +121,30 @@ function levels(level) {
     switch (level) {
         case 1:
             icon = "топту"
+            place = "столдун"
             break
         case 2:
             icon = "калемди"
+            icon1= "топту"
+            place= "столдун"
+            place1="отургучтун"
             break
         case 3:
-            icon = "китепти"
+            icon = "калемди"
+            icon1 = "топту"
+            place = "отургучтун"
+            place1 = "столдун"
             break
         case 4:
-            icon = "топту"
+            icon = "китепти"
             icon1 = "калемди"
-            icon2 = "китепти"
+            icon2 = "топту"
+            place = "отургучтун"
+            place1 = "столдун"
             break
         case 5:
-            icon = "топту"
-            icon1 = "калемди"
+            icon = "калемди"
+            icon1 = "топту"
             icon2 = "китепти"
             break
         case 6:
@@ -138,68 +154,85 @@ function levels(level) {
             break
         case 7:
             color = "кызыл"
+            place = "кызыл-столго"
+            place1 = "көк-столго"
             break
         case 8:
             color = "жашыл"
+            place = "жашыл-столго"
+            place1 = "көк-столго"
             break
         case 9:
             color = "көк"
+            place = "көк-столго"
+            place1 = "жашыл-столго"
             break
+        case 10:
+            color = "көк"
+            place = "жашыл-отургучка"
+            place1 = "көк-отургучка"
+            place2 = "кызыл-отургучка"
+            break  
     }
     if (level <= 3) {
         $description.innerHTML = ""
-        // audio = new Audio(`audio/${icon}-table.mp3`);
-        // audio.play()
+        audio = new Audio(`audioKyr/${icon}-${place}.mp3`);
+        audio.play()
         $description.insertAdjacentHTML('beforeend', `
-            <p>${icon} столдун устуно кой</p>
+            <p>${icon} ${place} устуно кой</p>
         `)
+        $chair.classList.remove('hide')
+        $circle1.classList.remove('hide')
         $circle.style.backgroundImage = `url(./icon/${icon}.png)`
-        $table.style.backgroundImage = `url(./icon/table.png)`
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
+        $circle1.style.backgroundImage = `url(./icon/${icon1}.png)`
     } else if (level > 3 && level <= 6) {
-        // audio = new Audio(`audio/${icon}-table.mp3`);
-        // audio.play()
+        audio = new Audio(`audioKyr/${icon}-${place}.mp3`);
+        audio.play()
         $description.innerHTML = ""
         $description.insertAdjacentHTML('beforeend', `
-            <p>${icon} столдун устуно кой</p>
+            <p>${icon} ${place} устуно кой</p>
         `)
         $circle1.classList.remove('hide')
         $circle2.classList.remove('hide')
+        
         $circle.style.backgroundImage = `url(./icon/${icon}.png)`
         $circle1.style.backgroundImage = `url(./icon/${icon1}.png)`
         $circle2.style.backgroundImage = `url(./icon/${icon2}.png)`
-        $table.style.backgroundImage = `url(./icon/table.png)`
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
     } else if (level > 6 && level < 10) {
         $circle1.classList.add('hide')
         $circle2.classList.add('hide')
         console.log(level)
         console.log(color)
-        // audio = new Audio(`audio/${color}ball-${color}table.mp3`);
-        // audio.play()
+        audio = new Audio(`audioKyr/${color}топту-${color}столдун.mp3`);
+        audio.play()
         $description.innerHTML = ""
         $description.insertAdjacentHTML('beforeend', `
             <p>${color} топту  ${color} столдун устуно кой</p>
         `)
-        // <div>
-        //         <img src="./ball${level}.png">
-        //         --- ${color} ball
-        //     </div>
-        //      <div>
-        //         <img src="./table${level}.png">
-        //         --- ${color} table
-        //     </div>
+      
         $table.style.color = "black"
         $circle.style.backgroundImage = `url(./ball${level}.png)`
-        $table.style.backgroundImage = `url(./table${level}.png)`
-    } else {
-        level -= 3
-        $table1.classList.remove('hide')
-        $table2.classList.remove('hide')
-        $table1.style.backgroundImage = url(`./table2.png`)
-        $table1.style.right = "50%"
-        $table2.style.right = "80%"
-        $table2.style.backgroundImage = url(`./table3.png`)
-        $table.style.backgroundImage = url(`./table1.png`)
-        $circle.style.backgroundImage = url(`./ball${level}.png`)
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
+    } else if (level >= 10) {
+        $circle1.classList.add('hide');
+        $circle2.classList.add('hide');
+        audio = new Audio(`audioKyr/10.mp3`);
+        audio.play()
+        $description.innerHTML = ""
+        $description.insertAdjacentHTML('beforeend', `
+            <p>${color} топту жашыл отургучтун устуно кой</p>
+        `)
+        $table.style.color = "black"
+        $chair2.classList.remove('hide')
+        $circle.style.backgroundImage = `url(./ball${9}.png)`
+        $table.style.backgroundImage = `url(./icon/${place}.png)`
+        $chair.style.backgroundImage = `url(./icon/${place1}.png)`
+        $chair2.style.backgroundImage = `url(./icon/${place2}.png)`
     }
 }
 
